@@ -1,7 +1,9 @@
 const express = require('express')
 const cors = require('cors')
-
+const compression = require('compression')
+const morgan = require('morgan')
 const helmet = require('helmet')
+
 const app = express()
 
 require('dotenv').config()
@@ -10,9 +12,12 @@ app.use(cors({
 }))
 app.use(helmet())
 
-app.get('/', (req, res, next) =>{
-    return res.status(200).json('find out')
-})
+app.use(morgan("dev"))
+
+app.use(compression())
+app.use(express.json())
+
+app.use('', require('./routers/index'))
 
 app.use((req, res, next) => {
     const statusCode = 404
