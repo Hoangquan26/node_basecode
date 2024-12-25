@@ -7,10 +7,11 @@ const categorySchema = new Schema({
     cate_name: { type: String,required: true, trim: true, },
     cate_thumb: { type: String, required: true },
     cate_description: { type: String,  default: '', maxlength: 500},
-    is_active: { type: Boolean, default: true  },
+    is_active: { type: Boolean, default: true },
+    userId: {type: Types.ObjectId, required: true, ref: 'User'}
 }, {
     timestamps: true,
     collection: COLLECTION_NAME
 })
 
-moudle.exports = model(DOCUMENT_NAME, categorySchema)
+module.exports = model(DOCUMENT_NAME, categorySchema)
