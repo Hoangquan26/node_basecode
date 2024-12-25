@@ -10,7 +10,7 @@ const productSchema = new Schema({
     product_price: { type: Number, required: true},
     product_quantity: { type: Number, required: true},
     product_description: { type: String },
-    product_type: { type: Types.ObjectId, required: true, ref: "Category"},
+    categoryId: { type: Types.ObjectId, required: true, ref: "Category"},
     product_attributes: { type: Schema.Types.Mixed, required: true},
     product_shop : {
         type: Schema.Types.ObjectId,

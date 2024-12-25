@@ -51,11 +51,17 @@ const getInstanceData = ({instance, select = []}) => {
     return data
 }
 
+const readUnselectArray = (unselect) => {
+    return Object.fromEntries(unselect.map((val) => [val, 0])) 
+}
+
+
 module.exports = {
     asyncHandle,
     clearUpdateNestedValue,
     convertObjectIdMongoDB,
     authHeaders,
     consoleLogDevMode,
-    getInstanceData
+    getInstanceData,
+    readUnselectArray
 }
