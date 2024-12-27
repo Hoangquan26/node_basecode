@@ -6,9 +6,12 @@ const express = require('express')
 const router = express.Router()
 
 
-router.get('', asyncHandle(CategoryController.getAllCategories))
+router.get('', asyncHandle(CategoryController.getAllCategoriesByUser))
+
 router.use('', authUserMiddleware)
-router.post('', asyncHandle(CategoryController.createCategory))
+
+router.post('/all', asyncHandle(CategoryController.getAllCategoriesByShop))
+router.post('/create', asyncHandle(CategoryController.createCategory))
 router.patch('/:cateId', asyncHandle(CategoryController.updateCategory))
 router.patch('/:cateId/active', asyncHandle(CategoryController.activeCategory))
 router.patch('/:cateId/inactive', asyncHandle(CategoryController.inactiveCategory))

@@ -5,38 +5,35 @@ const categoryModel = require('../models/categories.model')
 const { convertObjectIdMongoDB } = require("../utills")
 
 class CategoryService {
-    static createCategory = async({user, cate_name, cate_thumb, cate_description}) => {
-        const { userId } = user
+    static createCategory = async({userId, cate_name, cate_thumb, cate_description}) => {
+      
         if(!userId ) throw new BadRequestError('Something wrong')
-        const newCate = await categoryModel({
+        const newCate = await categoryModel.create({
             cate_name,
             cate_description,
             cate_thumb,
             userId  
         })
-
         return newCate
     }
 
-    static updateCategory = async({cateId, user, payload}) => {
-        const { userId } = user
+    static updateCategory = async({cateId, userId, payload}) => {
+        console.log(cateId, userId, payload)
         if(!userId ) throw new BadRequestError('Something wrong')
         const filter = {
             userId,
             _id: convertObjectIdMongoDB(cateId)
         }
         const update = {
-            payload
+            ...payload
         }
         const options = {
-            upsert: true,
             new: true
         }
         return await categoryModel.findOneAndUpdate(filter, update, options)
     }
 
-    static activeCategory = async({cateId, user}) => {
-        const { userId } = user
+    static activeCategory = async({cateId, userId}) => {
         if(!userId ) throw new BadRequestError('Something wrong')
 
         const foundCate = await categoryModel.findOne({
@@ -50,8 +47,7 @@ class CategoryService {
         return foundCate
     }
 
-    static inactiveCategory = async() => {
-        const { userId } = user
+    static inactiveCategory = async({cateId, userId}) => {
         if(!userId ) throw new BadRequestError('Something wrong')
 
         const foundCate = await categoryModel.findOne({
@@ -71,12 +67,23 @@ class CategoryService {
     //     return await categoryModel.find({userId})
     // }
     
-    static getAllCategories = async() => {
-        const { userId } = user
-        if(!userId ) throw new BadRequestError('Something wrong')
-        return await categoryModel.find({is_active: true}).lean()
+    static getAllCategoriesByUser = async({limit = 25, page = 1, sort = {_id: 1}, filter = {}}) => {
+        const skip = (page - 1) * limit
+        return await categoryModel.find({
+            is_active: true,
+            ...filter
+        }).skip(skip).limit(limit).sort(sort).lean()
     }
 
+    static getAllCategoriesByShop = async({limit = 25, page = 1, sort = {_id: 1}, filter = {}}) => {
+        const skip = (page - 1) * limit
+        const { userId } = user
+        if(!userId ) throw new BadRequestError('Something wrong')
+        return await categoryModel.find({
+            filter,
+            userId: convertObjectIdMongoDB(userId)
+        }).skip(skip).limit(limit).sort(sort).lean()
+    }
 
 }
 
