@@ -5,7 +5,8 @@ const router = express.Router()
 
 
 //check api key
-router.use('/access', require('./access.router.js'))
-router.use('/category', require('./category.router.js'))
+router.use('/access', require('./access'))
+router.use('/category', require('./category'))
 router.use('/product', require('./product'))
+router.use('/discount', require('./discount'))
 module.exports = router

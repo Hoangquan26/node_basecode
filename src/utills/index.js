@@ -55,6 +55,10 @@ const readUnselectArray = (unselect) => {
     return Object.fromEntries(unselect.map((val) => [val, 0])) 
 }
 
+const readSelectArray = (select) => {
+    return Object.fromEntries(select.map((val) => [val, 1]))
+}
+
 
 module.exports = {
     asyncHandle,
@@ -63,5 +67,6 @@ module.exports = {
     authHeaders,
     consoleLogDevMode,
     getInstanceData,
-    readUnselectArray
+    readUnselectArray,
+    readSelectArray
 }
