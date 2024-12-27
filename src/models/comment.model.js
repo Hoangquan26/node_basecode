@@ -1,17 +1,33 @@
-'use strict'
+const mongoose = require('mongoose');
 
-const DOCUMENT_NAME = "Comment"
-const COLLECTION_NAME = "Comments"
-
-const { Types, Schema, model } = require('mongoose')
-
+const Schema = mongoose.Schema;
+const DOCUMENT_NAME = "Comment";
+const COLLECTION_NAME = "Comments";
 const commentSchema = new Schema({
-    comment_title: {
+    text: {
         type: String,
+        required: true
+    },
+    author: {
+        type: Types.ObjectId,
         required: true,
-        trim: true
+        ref: 'User'
+    },
+    leftNode: {
+        type: Number,
+        required: true,
+        default: null
+    },
+    rightNode: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        default: null
     }
-}, {
+}< {
     timestamps: true,
     collection: COLLECTION_NAME
-})
+});
+
+const Comment = mongoose.model(DOCUMENT_NAME, commentSchema);
+
+module.exports = Comment;
